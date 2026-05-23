@@ -1,0 +1,21 @@
+# Scratch/research docs
+.scratch/
+
+# Release artifacts
+releases/
+
+# Local demo captures
+/*.mp4
+
+# .NET
+bin/
+obj/
+
+# Environment
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace

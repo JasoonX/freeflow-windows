@@ -1,0 +1,35 @@
+name: Windows
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-test-package:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@d4c94342e560b34958eacfc5d055d21461ed1c5d # v5.0.0
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Build Windows app
+        run: dotnet build FreeFlowWindows\FreeFlowWindows.csproj
+
+      - name: Run Windows tests
+        run: dotnet run --project FreeFlowWindows.Tests\FreeFlowWindows.Tests.csproj
+
+      - name: Package Windows app
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts\package-windows.ps1
+
+      - name: Upload Windows ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: FreeFlow-for-Windows-win-x64
+          path: releases/FreeFlow-for-Windows-win-x64.zip
